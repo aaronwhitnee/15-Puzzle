@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 #import "GameBrain.h"
+#import "TilesViewController.h"
+#import "PopUpView.h"
 
 @interface ViewController : UIViewController
 

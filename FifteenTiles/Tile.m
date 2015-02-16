@@ -36,7 +36,7 @@
     _numberLabel.text = [NSString stringWithFormat:@"%d", self.number];
     _numberLabel.textColor = [[UIColor alloc] initWithRed:1 green:1 blue:1 alpha:1];
     _numberLabel.textAlignment = NSTextAlignmentCenter;
-    _numberLabel.font = [UIFont systemFontOfSize:30];
+    _numberLabel.font = [UIFont systemFontOfSize: self.frame.size.width / 2];
     _numberLabel.center = CGPointMake(self.frame.size.width / 2, self.frame.size.height / 2);
     return _numberLabel;
 }

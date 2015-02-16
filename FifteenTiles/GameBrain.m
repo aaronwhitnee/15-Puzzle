@@ -9,13 +9,14 @@
 #import "GameBrain.h"
 
 @interface GameBrain ()
-@property(nonatomic) NSMutableArray *gameTilesArray;
-@property(nonatomic) int lastMoveMade;
-@property(nonatomic) Tile *invisibleTile;
-@property(nonatomic, strong) Tile *canMoveLeft;
-@property(nonatomic, strong) Tile *canMoveRight;
-@property(nonatomic, strong) Tile *canMoveUp;
-@property(nonatomic, strong) Tile *canMoveDown;
+
+@property(atomic) NSMutableArray *gameTilesArray;
+@property(atomic) int lastMoveMade;
+@property(atomic) Tile *invisibleTile;
+@property(atomic, strong) Tile *canMoveLeft;
+@property(atomic, strong) Tile *canMoveRight;
+@property(atomic, strong) Tile *canMoveUp;
+@property(atomic, strong) Tile *canMoveDown;
 
 - (void) moveInvisibleTile;
 
@@ -24,11 +25,18 @@
 @implementation GameBrain
 
 + (GameBrain *) sharedInstance {
-    static GameBrain *sharedObject = nil;
-    if (sharedObject == nil) {
-        sharedObject = [[GameBrain alloc] init];
-    }
-    return sharedObject;
+//    static GameBrain *sharedObject = nil;
+//    if (sharedObject == nil) {
+//        sharedObject = [[GameBrain alloc] init];
+//    }
+//    return sharedObject;
+    
+    static dispatch_once_t once;
+    static id sharedInstance;
+    dispatch_once(&once, ^{
+        sharedInstance = [[self alloc] init];
+    });
+    return sharedInstance;
 }
 
 - (void) prepareGame {
@@ -37,7 +45,6 @@
     self.canMoveUp = nil;
     self.canMoveDown = _gameTilesArray[11];
     self.invisibleTile = _gameTilesArray[15];
-//    self.lastFourMoves = [[NSMutableArray alloc] initWithCapacity:4];
 }
 
 - (void) addTileToGrid:(Tile *)tile {
@@ -47,6 +54,7 @@
     [_gameTilesArray addObject:tile];
 }
 
+// remembers the last move made to avoid backtracking during a shuffle
 - (void) makeARandomMove {
     int randomMoveNumber = arc4random_uniform(4);
     printf("attempting to move (%i)\n", randomMoveNumber);
@@ -54,28 +62,24 @@
         case 0:
             if(self.canMoveLeft && _lastMoveMade != 1) {
                 [self moveATileLeft];
-                //[self.lastFourMoves addObject:@0];
                 _lastMoveMade = 0;
                 break;
             }
         case 1:
             if(self.canMoveRight && _lastMoveMade != 0) {
                 [self moveATileRight];
-                //[self.lastFourMoves addObject:@1];
                 _lastMoveMade = 1;
                 break;
             }
         case 2:
             if(self.canMoveUp && _lastMoveMade != 3) {
                 [self moveATileUp];
-                //[self.lastFourMoves addObject:@2];
                 _lastMoveMade = 2;
                 break;
             }
         case 3:
             if(self.canMoveDown && _lastMoveMade != 2) {
                 [self moveATileDown];
-                //[self.lastFourMoves addObject:@3];
                 _lastMoveMade = 3;
                 break;
             }

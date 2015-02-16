@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0C0057641A91B47A00286586 /* PopUpView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C0057631A91B47A00286586 /* PopUpView.m */; };
 		0C9AA1641A8DB34400A36B66 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C9AA1631A8DB34400A36B66 /* main.m */; };
 		0C9AA1671A8DB34400A36B66 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C9AA1661A8DB34400A36B66 /* AppDelegate.m */; };
 		0C9AA16A1A8DB34400A36B66 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C9AA1691A8DB34400A36B66 /* ViewController.m */; };
@@ -30,6 +31,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0C0057621A91B47A00286586 /* PopUpView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PopUpView.h; sourceTree = "<group>"; };
+		0C0057631A91B47A00286586 /* PopUpView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PopUpView.m; sourceTree = "<group>"; };
 		0C9AA15E1A8DB34400A36B66 /* FifteenTiles.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FifteenTiles.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0C9AA1621A8DB34400A36B66 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0C9AA1631A8DB34400A36B66 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -96,6 +99,8 @@
 				0C9AA18B1A8DCD1300A36B66 /* GameBrain.m */,
 				0C9AA1681A8DB34400A36B66 /* ViewController.h */,
 				0C9AA1691A8DB34400A36B66 /* ViewController.m */,
+				0C0057621A91B47A00286586 /* PopUpView.h */,
+				0C0057631A91B47A00286586 /* PopUpView.m */,
 				0C9AA1871A8DCCC300A36B66 /* TilesViewController.h */,
 				0C9AA1881A8DCCC300A36B66 /* TilesViewController.m */,
 				0C9AA18D1A8DCD7A00A36B66 /* Tile.h */,
@@ -239,6 +244,7 @@
 				0C9AA16A1A8DB34400A36B66 /* ViewController.m in Sources */,
 				0C9AA1671A8DB34400A36B66 /* AppDelegate.m in Sources */,
 				0C9AA18C1A8DCD1300A36B66 /* GameBrain.m in Sources */,
+				0C0057641A91B47A00286586 /* PopUpView.m in Sources */,
 				0C9AA1641A8DB34400A36B66 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

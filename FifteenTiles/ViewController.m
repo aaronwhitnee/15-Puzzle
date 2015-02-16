@@ -7,7 +7,6 @@
 //
 
 #import "ViewController.h"
-#import "TilesViewController.h"
 
 @interface ViewController () {
     CGRect window;
@@ -16,6 +15,7 @@
 
 @property (nonatomic, strong) GameBrain *gameBrain;
 @property (nonatomic, strong) TilesViewController *tilesViewController;
+@property (nonatomic, strong) PopUpView *popUpView;
 @property (nonatomic, strong) UIButton *shuffleButton;
 @property (nonatomic, strong) UIButton *resetButton;
 @property (nonatomic, strong) UISlider *shuffleSlider;
@@ -81,15 +81,13 @@
     [_shuffleButton setTitle:@"Shuffle" forState:UIControlStateNormal];
     [_shuffleButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     _shuffleButton.backgroundColor = [UIColor colorWithRed:0.8 green:0.1 blue:0.1 alpha:1.0];
-    CGPoint shuffleButtonCenter = CGPointMake(window.size.width / 2 - 80, window.size.height - 60);
-    _shuffleButton.center = shuffleButtonCenter;
+    _shuffleButton.center = CGPointMake(window.size.width / 4, window.size.height - 60);
     
     _resetButton = [[UIButton alloc] initWithFrame: buttonFrame];
     [_resetButton setTitle:@"Reset" forState:UIControlStateNormal];
     [_resetButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     _resetButton.backgroundColor = [UIColor colorWithRed:0.2 green:0.6 blue:0.2 alpha:1.0];
-    CGPoint resetButtonCenter = CGPointMake(window.size.width / 2 + 80, window.size.height - 60);
-    _resetButton.center = resetButtonCenter;
+    _resetButton.center = CGPointMake(window.size.width / 4 * 3, window.size.height - 60);
     
     [self.view addSubview:_resetButton];
     [self.view addSubview:_shuffleButton];
@@ -99,7 +97,29 @@
 }
 
 -(void) shuffleButtonPressed:(UIButton *)sender {
-    [_tilesViewController shuffleTiles: numberOfShuffleSteps];
+    _gameBrain.gameState = busy;
+    
+    [self displayBusyIndicator];
+
+    [self performSelector:@selector(startShuffling:) onThread:[NSThread mainThread] withObject:[NSNumber numberWithInt:numberOfShuffleSteps] waitUntilDone:YES];
+
+}
+
+-(void) displayBusyIndicator {
+    if (!_popUpView) {
+        _popUpView = [[PopUpView alloc] initWithFrame:window message:@"Shuffling..."];
+    }
+    [self.view addSubview:_popUpView];
+    [_popUpView startAnimatingBusyIndicator];
+}
+
+-(void) removeBusyIndicator {
+    [_popUpView stopAnimatingBusyIndicator];
+    [_popUpView removeFromSuperview];
+}
+
+-(void) startShuffling:(NSNumber *)shuffleCount {
+    [_tilesViewController shuffleTiles: [shuffleCount intValue]];
 }
 
 -(void) resetButtonPressed:(UIButton *)sender {

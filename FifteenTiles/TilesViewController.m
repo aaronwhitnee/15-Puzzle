@@ -60,7 +60,7 @@
     // and can swap places with visible tiles)
     _invisibleTile = [[Tile alloc] initWithFrame:CGRectMake(tileWidth * 3, tileWidth * 3, tileWidth, tileWidth)];
     _invisibleTile.tilesArrayIndex = 15;
-    _invisibleTile.backgroundColor = [UIColor blueColor];
+    _invisibleTile.backgroundColor = [UIColor clearColor];
     [_gameBrain addTileToGrid: self.invisibleTile];
     [self.view addSubview:_invisibleTile];
     [self.view sendSubviewToBack:_invisibleTile];
@@ -125,9 +125,9 @@
     NSLog(@"Shuffle tiles %d times.", numberOfSteps);
     int successfulMoves = 0;
     float timeDelayInterval = 0;
-
+    
     while (successfulMoves < numberOfSteps) {
-        [UIView animateWithDuration:0.1
+        [UIView animateWithDuration:0.15
                               delay:timeDelayInterval
                             options:UIViewAnimationOptionCurveEaseInOut
                          animations:^{
@@ -135,8 +135,10 @@
                          }
                          completion:nil];
         successfulMoves++;
-        timeDelayInterval += 0.1;
+        timeDelayInterval += 0.15;
     }
+    _gameBrain.gameState = playing;
+    [[self.view.superview nextResponder] performSelector:@selector(removeBusyIndicator) withObject:nil afterDelay:numberOfSteps * 0.15];
 }
 
 - (void) resetTiles {
@@ -147,15 +149,5 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end

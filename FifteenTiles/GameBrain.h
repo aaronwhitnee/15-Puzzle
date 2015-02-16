@@ -11,6 +11,9 @@
 
 @interface GameBrain : NSObject
 
+@property(atomic) enum state {gameOver = 0, playing, busy};
+@property(atomic) enum state gameState;
+
 + (GameBrain *) sharedInstance;
 - (void) prepareGame;
 - (void) addTileToGrid:(Tile *)tile;
