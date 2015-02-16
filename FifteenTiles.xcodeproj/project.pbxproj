@@ -14,6 +14,9 @@
 		0C9AA16F1A8DB34400A36B66 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0C9AA16E1A8DB34400A36B66 /* Images.xcassets */; };
 		0C9AA1721A8DB34400A36B66 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0C9AA1701A8DB34400A36B66 /* LaunchScreen.xib */; };
 		0C9AA17E1A8DB34400A36B66 /* FifteenTilesTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C9AA17D1A8DB34400A36B66 /* FifteenTilesTests.m */; };
+		0C9AA1891A8DCCC300A36B66 /* TilesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C9AA1881A8DCCC300A36B66 /* TilesViewController.m */; };
+		0C9AA18C1A8DCD1300A36B66 /* GameBrain.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C9AA18B1A8DCD1300A36B66 /* GameBrain.m */; };
+		0C9AA18F1A8DCD7A00A36B66 /* Tile.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C9AA18E1A8DCD7A00A36B66 /* Tile.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -40,6 +43,12 @@
 		0C9AA1771A8DB34400A36B66 /* FifteenTilesTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FifteenTilesTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		0C9AA17C1A8DB34400A36B66 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0C9AA17D1A8DB34400A36B66 /* FifteenTilesTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FifteenTilesTests.m; sourceTree = "<group>"; };
+		0C9AA1871A8DCCC300A36B66 /* TilesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TilesViewController.h; sourceTree = "<group>"; };
+		0C9AA1881A8DCCC300A36B66 /* TilesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TilesViewController.m; sourceTree = "<group>"; };
+		0C9AA18A1A8DCD1300A36B66 /* GameBrain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameBrain.h; sourceTree = "<group>"; };
+		0C9AA18B1A8DCD1300A36B66 /* GameBrain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameBrain.m; sourceTree = "<group>"; };
+		0C9AA18D1A8DCD7A00A36B66 /* Tile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Tile.h; sourceTree = "<group>"; };
+		0C9AA18E1A8DCD7A00A36B66 /* Tile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Tile.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -83,8 +92,14 @@
 			children = (
 				0C9AA1651A8DB34400A36B66 /* AppDelegate.h */,
 				0C9AA1661A8DB34400A36B66 /* AppDelegate.m */,
+				0C9AA18A1A8DCD1300A36B66 /* GameBrain.h */,
+				0C9AA18B1A8DCD1300A36B66 /* GameBrain.m */,
 				0C9AA1681A8DB34400A36B66 /* ViewController.h */,
 				0C9AA1691A8DB34400A36B66 /* ViewController.m */,
+				0C9AA1871A8DCCC300A36B66 /* TilesViewController.h */,
+				0C9AA1881A8DCCC300A36B66 /* TilesViewController.m */,
+				0C9AA18D1A8DCD7A00A36B66 /* Tile.h */,
+				0C9AA18E1A8DCD7A00A36B66 /* Tile.m */,
 				0C9AA16B1A8DB34400A36B66 /* Main.storyboard */,
 				0C9AA16E1A8DB34400A36B66 /* Images.xcassets */,
 				0C9AA1701A8DB34400A36B66 /* LaunchScreen.xib */,
@@ -219,8 +234,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0C9AA1891A8DCCC300A36B66 /* TilesViewController.m in Sources */,
+				0C9AA18F1A8DCD7A00A36B66 /* Tile.m in Sources */,
 				0C9AA16A1A8DB34400A36B66 /* ViewController.m in Sources */,
 				0C9AA1671A8DB34400A36B66 /* AppDelegate.m in Sources */,
+				0C9AA18C1A8DCD1300A36B66 /* GameBrain.m in Sources */,
 				0C9AA1641A8DB34400A36B66 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -412,6 +430,7 @@
 				0C9AA1831A8DB34400A36B66 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		0C9AA1841A8DB34400A36B66 /* Build configuration list for PBXNativeTarget "FifteenTilesTests" */ = {
 			isa = XCConfigurationList;
@@ -420,6 +439,7 @@
 				0C9AA1861A8DB34400A36B66 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
