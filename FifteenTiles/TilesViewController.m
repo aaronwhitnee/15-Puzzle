@@ -123,41 +123,20 @@
 
 - (void) shuffleTiles:(int)numberOfSteps {
     NSLog(@"Shuffle tiles %d times.", numberOfSteps);
-    __block int successfulMoves = 0;
-//    __block int timeDelayInterval = 0;
-//
-//    [UIView animateWithDuration:0.3
-//                          delay:timeDelayInterval
-//                        options:UIViewAnimationOptionCurveEaseInOut | UIViewAnimationOptionRepeat
-//                     animations:^{
-//                         [UIView setAnimationRepeatCount:numberOfSteps];
-//                         [_gameBrain makeARandomMove];
-//                     }
-//                     completion:^(BOOL finished){
-//                         [_gameBrain makeARandomMove];
-//                         timeDelayInterval += 0.5;
-//                     }];
+    int successfulMoves = 0;
+    float timeDelayInterval = 0;
 
     while (successfulMoves < numberOfSteps) {
-        [UIView animateWithDuration:0.3 animations:^{
-            [_gameBrain makeARandomMove];
-        }];
+        [UIView animateWithDuration:0.1
+                              delay:timeDelayInterval
+                            options:UIViewAnimationOptionCurveEaseInOut
+                         animations:^{
+                             [_gameBrain makeARandomMove];
+                         }
+                         completion:nil];
         successfulMoves++;
+        timeDelayInterval += 0.1;
     }
-
-    
-//    __block int successfulMoves = 0;
-//    while (successfulMoves < numberOfSteps) {
-//        [UIView animateWithDuration:0.5
-//                              delay:1
-//                            options:UIViewAnimationOptionCurveEaseInOut | UIViewAnimationOptionRepeat
-//                         animations:^{
-//                             [UIView setAnimationRepeatCount:numberOfSteps];
-//                             [_gameBrain makeARandomMove];
-//                         }
-//                         completion:nil
-//         ];
-//    }
 }
 
 - (void) resetTiles {
