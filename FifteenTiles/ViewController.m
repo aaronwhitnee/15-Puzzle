@@ -37,98 +37,99 @@
     
     window = [[UIScreen mainScreen] applicationFrame];
     
-    _gameBrain = [GameBrain sharedInstance];
+    self.gameBrain = [GameBrain sharedInstance];
     self.view.backgroundColor = [UIColor whiteColor];
     
     [self addTilesViewControllerToScreen];
     [self addShuffleSliderToScreen];
     [self addButtonsToScreen];
-    [_gameBrain prepareGame];
+    [self.gameBrain prepareGame];
 }
 
 - (void) addTilesViewControllerToScreen {
     int tilesViewEdgeLength = (window.size.width / 4 - 5) * 4;
     CGRect tilesViewFrame = CGRectMake(0, 0, tilesViewEdgeLength, tilesViewEdgeLength);
     CGPoint tilesViewCenter = CGPointMake(window.size.width / 2, window.size.height / 2 - 50);
-    _tilesViewController = [[TilesViewController alloc] initWithFrame:tilesViewFrame center:tilesViewCenter];
+    self.tilesViewController = [[TilesViewController alloc] initWithFrame:tilesViewFrame center:tilesViewCenter];
     [self.view addSubview: self.tilesViewController.view];
 }
 
 - (void) addShuffleSliderToScreen {
     CGRect sliderFrame = CGRectMake(0, 0, window.size.width - 50, 20);
-    _shuffleSlider = [[UISlider alloc] initWithFrame: sliderFrame];
-    CGPoint shuffleSliderCenter = CGPointMake(window.size.width / 2, CGRectGetMaxY(_tilesViewController.view.frame) + 30);
-    _shuffleSlider.center = shuffleSliderCenter;
-    _shuffleSlider.value = 0.5;
+    self.shuffleSlider = [[UISlider alloc] initWithFrame: sliderFrame];
+    CGPoint shuffleSliderCenter = CGPointMake(window.size.width / 2, CGRectGetMaxY(self.tilesViewController.view.frame) + 30);
+    self.shuffleSlider.center = shuffleSliderCenter;
+    self.shuffleSlider.value = 0.5;
     
     CGRect sliderLabelFrame = CGRectMake(0, 0, 20, 20);
-    _shuffleSliderLabel = [[UILabel alloc] initWithFrame: sliderLabelFrame];
-    CGPoint labelCenter = CGPointMake(window.size.width / 2, CGRectGetMaxY(_shuffleSlider.frame) + 20);
-    _shuffleSliderLabel.center = labelCenter;
-    numberOfShuffleSteps = _shuffleSlider.value * 50;
-    _shuffleSliderLabel.textAlignment = NSTextAlignmentCenter;
-    _shuffleSliderLabel.text = [NSString stringWithFormat:@"%d", numberOfShuffleSteps];
+    self.shuffleSliderLabel = [[UILabel alloc] initWithFrame: sliderLabelFrame];
+    CGPoint labelCenter = CGPointMake(window.size.width / 2, CGRectGetMaxY(self.shuffleSlider.frame) + 20);
+    self.shuffleSliderLabel.center = labelCenter;
+    numberOfShuffleSteps = self.shuffleSlider.value * 50;
+    self.shuffleSliderLabel.textAlignment = NSTextAlignmentCenter;
+    self.shuffleSliderLabel.text = [NSString stringWithFormat:@"%d", numberOfShuffleSteps];
 
-    [_shuffleSlider addTarget:self action:@selector(sliderValueChanged:) forControlEvents:UIControlEventValueChanged];
+    [self.shuffleSlider addTarget:self action:@selector(sliderValueChanged:) forControlEvents:UIControlEventValueChanged];
     
-    [self.view addSubview:_shuffleSliderLabel];
-    [self.view addSubview:_shuffleSlider];
+    [self.view addSubview:self.shuffleSliderLabel];
+    [self.view addSubview:self.shuffleSlider];
 }
 
 - (void) addButtonsToScreen {
     CGRect buttonFrame = CGRectMake(0, 0, 100, 50);
-    _shuffleButton = [[UIButton alloc] initWithFrame: buttonFrame];
-    [_shuffleButton setTitle:@"Shuffle" forState:UIControlStateNormal];
-    [_shuffleButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    _shuffleButton.backgroundColor = [UIColor colorWithRed:0.8 green:0.1 blue:0.1 alpha:1.0];
-    _shuffleButton.center = CGPointMake(window.size.width / 4, window.size.height - 60);
+    self.shuffleButton = [[UIButton alloc] initWithFrame: buttonFrame];
+    [self.shuffleButton setTitle:@"Shuffle" forState:UIControlStateNormal];
+    [self.shuffleButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    self.shuffleButton.backgroundColor = [UIColor colorWithRed:0.8 green:0.1 blue:0.1 alpha:1.0];
+    self.shuffleButton.center = CGPointMake(window.size.width / 4, window.size.height - 60);
     
-    _resetButton = [[UIButton alloc] initWithFrame: buttonFrame];
-    [_resetButton setTitle:@"Reset" forState:UIControlStateNormal];
-    [_resetButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    _resetButton.backgroundColor = [UIColor colorWithRed:0.2 green:0.6 blue:0.2 alpha:1.0];
-    _resetButton.center = CGPointMake(window.size.width / 4 * 3, window.size.height - 60);
+    self.resetButton = [[UIButton alloc] initWithFrame: buttonFrame];
+    [self.resetButton setTitle:@"Reset" forState:UIControlStateNormal];
+    [self.resetButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    self.resetButton.backgroundColor = [UIColor colorWithRed:0.2 green:0.6 blue:0.2 alpha:1.0];
+    self.resetButton.center = CGPointMake(window.size.width / 4 * 3, window.size.height - 60);
     
-    [self.view addSubview:_resetButton];
-    [self.view addSubview:_shuffleButton];
+    [self.view addSubview:self.resetButton];
+    [self.view addSubview:self.shuffleButton];
     
-    [_shuffleButton addTarget:self action:@selector(shuffleButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
-    [_resetButton addTarget:self action:@selector(resetButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+    [self.shuffleButton addTarget:self action:@selector(shuffleButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+    [self.resetButton addTarget:self action:@selector(resetButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
 }
 
 -(void) shuffleButtonPressed:(UIButton *)sender {
-    _gameBrain.gameState = busy;
+    self.gameBrain.gameState = busy;
     
-    [self displayBusyIndicator];
+    [self displayBusyScreen];
 
     [self performSelector:@selector(startShuffling:) onThread:[NSThread mainThread] withObject:[NSNumber numberWithInt:numberOfShuffleSteps] waitUntilDone:YES];
 
 }
 
--(void) displayBusyIndicator {
-    if (!_popUpView) {
-        _popUpView = [[PopUpView alloc] initWithFrame:window message:@"Shuffling..."];
+-(void) displayBusyScreen {
+    if (!self.popUpView) {
+        self.popUpView = [[PopUpView alloc] initWithFrame:window message:@"Shuffling..."];
     }
-    [self.view addSubview:_popUpView];
-    [_popUpView startAnimatingBusyIndicator];
+    [self.view addSubview:self.popUpView];
+    [self.popUpView startAnimatingBusyIndicator];
 }
 
 -(void) removeBusyIndicator {
-    [_popUpView stopAnimatingBusyIndicator];
-    [_popUpView removeFromSuperview];
+    [self.popUpView stopAnimatingBusyIndicator];
+    [self.popUpView removeFromSuperview];
 }
 
 -(void) startShuffling:(NSNumber *)shuffleCount {
-    [_tilesViewController shuffleTiles: [shuffleCount intValue]];
+    [self.tilesViewController shuffleTiles: [shuffleCount intValue]];
+    self.gameBrain.gameState = playing;
 }
 
 -(void) resetButtonPressed:(UIButton *)sender {
-    [_tilesViewController resetTiles];
+    [self.tilesViewController resetTiles];
 }
 
 -(void) sliderValueChanged:(UISlider *)sender {
-    numberOfShuffleSteps = _shuffleSlider.value * 50;
-    _shuffleSliderLabel.text = [NSString stringWithFormat:@"%d", numberOfShuffleSteps];
+    numberOfShuffleSteps = self.shuffleSlider.value * 50;
+    self.shuffleSliderLabel.text = [NSString stringWithFormat:@"%d", numberOfShuffleSteps];
 }
 
 - (void)didReceiveMemoryWarning {

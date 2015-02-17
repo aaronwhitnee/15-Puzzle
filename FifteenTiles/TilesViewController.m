@@ -39,7 +39,7 @@
 - (void) viewDidLoad {
     [super viewDidLoad];
     
-    _gameBrain = [GameBrain sharedInstance];
+    self.gameBrain = [GameBrain sharedInstance];
     
     self.view.backgroundColor = [UIColor blackColor];
     
@@ -51,19 +51,19 @@
             Tile *tempTile = [[Tile alloc] initWithFrame:CGRectMake(x, y, tileWidth, tileWidth) tileNumber:tileNum];
             tempTile.tilesArrayIndex = tileNum - 1;
             [self.view addSubview: tempTile];
-            [_gameBrain addTileToGrid: tempTile];
+            [self.gameBrain addTileToGrid: tempTile];
             tileNum++;
         }
     }
     
     // Create empty spot ("invisible tile" treated as a tile that takes up space,
     // and can swap places with visible tiles)
-    _invisibleTile = [[Tile alloc] initWithFrame:CGRectMake(tileWidth * 3, tileWidth * 3, tileWidth, tileWidth)];
-    _invisibleTile.tilesArrayIndex = 15;
-    _invisibleTile.backgroundColor = [UIColor clearColor];
-    [_gameBrain addTileToGrid: self.invisibleTile];
-    [self.view addSubview:_invisibleTile];
-    [self.view sendSubviewToBack:_invisibleTile];
+    self.invisibleTile = [[Tile alloc] initWithFrame:CGRectMake(tileWidth * 3, tileWidth * 3, tileWidth, tileWidth)];
+    self.invisibleTile.tilesArrayIndex = 15;
+    self.invisibleTile.backgroundColor = [UIColor clearColor];
+    [self.gameBrain addTileToGrid: self.invisibleTile];
+    [self.view addSubview:self.invisibleTile];
+    [self.view sendSubviewToBack:self.invisibleTile];
     
     [self.view addGestureRecognizer: self.swipeLeft];
     [self.view addGestureRecognizer: self.swipeRight];
@@ -73,22 +73,22 @@
 
 -(void) didSwipeLeft: (UISwipeGestureRecognizer *) swipeObject {
     [UIView animateWithDuration:0.3 animations:^{
-        [_gameBrain moveATileLeft];
+        [self.gameBrain moveATileLeft];
     }];
 }
 -(void) didSwipeRight: (UISwipeGestureRecognizer *) swipeObject {
     [UIView animateWithDuration:0.3 animations:^{
-        [_gameBrain moveATileRight];
+        [self.gameBrain moveATileRight];
     }];
 }
 -(void) didSwipeUp: (UISwipeGestureRecognizer *) swipeObject {
     [UIView animateWithDuration:0.3 animations:^{
-        [_gameBrain moveATileUp];
+        [self.gameBrain moveATileUp];
     }];
 }
 -(void) didSwipeDown: (UISwipeGestureRecognizer *) swipeObject {
     [UIView animateWithDuration:0.3 animations:^{
-        [_gameBrain moveATileDown];
+        [self.gameBrain moveATileDown];
     }];
 }
 
@@ -122,23 +122,33 @@
 }
 
 - (void) shuffleTiles:(int)numberOfSteps {
-    NSLog(@"Shuffle tiles %d times.", numberOfSteps);
-    int successfulMoves = 0;
-    float timeDelayInterval = 0;
-    
-    while (successfulMoves < numberOfSteps) {
-        [UIView animateWithDuration:0.15
-                              delay:timeDelayInterval
-                            options:UIViewAnimationOptionCurveEaseInOut
-                         animations:^{
-                             [_gameBrain makeARandomMove];
-                         }
-                         completion:nil];
-        successfulMoves++;
-        timeDelayInterval += 0.15;
+    if (numberOfSteps == 0) {
+        [[self.view.superview nextResponder] performSelector:@selector(removeBusyIndicator) withObject:nil afterDelay:0];
+        self.gameBrain.gameState = playing;
+        return;
     }
-    _gameBrain.gameState = playing;
-    [[self.view.superview nextResponder] performSelector:@selector(removeBusyIndicator) withObject:nil afterDelay:numberOfSteps * 0.15];
+    NSLog(@"Shuffle tiles %d times.", numberOfSteps);
+//    int successfulMoves = 0;
+//    float timeDelayInterval = 0;
+//    
+//    while (successfulMoves < numberOfSteps) {
+//        [UIView animateWithDuration:0.15
+//                              delay:timeDelayInterval
+//                            options:UIViewAnimationOptionCurveEaseInOut
+//                         animations:^{
+//                             [self.gameBrain makeARandomMove];
+//                         }
+//                         completion:nil];
+//        successfulMoves++;
+//        timeDelayInterval += 0.15;
+//    }
+    [UIView animateWithDuration:0.15
+                     animations:^{
+                         [self.gameBrain makeARandomMove];
+                     }
+                     completion:^(BOOL finished){
+                         [self shuffleTiles:numberOfSteps - 1];
+                     }];
 }
 
 - (void) resetTiles {

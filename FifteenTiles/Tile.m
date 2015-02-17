@@ -32,12 +32,12 @@
 - (UILabel *) numberLabel {
     if (!_numberLabel) {
         _numberLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 50, 50)];
+        _numberLabel.text = [NSString stringWithFormat:@"%d", self.number];
+        _numberLabel.textColor = [[UIColor alloc] initWithRed:1 green:1 blue:1 alpha:1];
+        _numberLabel.textAlignment = NSTextAlignmentCenter;
+        _numberLabel.font = [UIFont systemFontOfSize: self.frame.size.width / 2];
+        _numberLabel.center = CGPointMake(self.frame.size.width / 2, self.frame.size.height / 2);
     }
-    _numberLabel.text = [NSString stringWithFormat:@"%d", self.number];
-    _numberLabel.textColor = [[UIColor alloc] initWithRed:1 green:1 blue:1 alpha:1];
-    _numberLabel.textAlignment = NSTextAlignmentCenter;
-    _numberLabel.font = [UIFont systemFontOfSize: self.frame.size.width / 2];
-    _numberLabel.center = CGPointMake(self.frame.size.width / 2, self.frame.size.height / 2);
     return _numberLabel;
 }
 
