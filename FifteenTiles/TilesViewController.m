@@ -49,7 +49,8 @@
     tileWidth = (self.view.frame.size.width - 20) / 4;
     for (float y = 0; y < tileWidth * 4; y += tileWidth) {
         for (float x = 0; (x < tileWidth * 4) && (tileNum < 16); x += tileWidth) {
-            Tile *tempTile = [[Tile alloc] initWithFrame:CGRectMake(x, y, tileWidth, tileWidth) tileNumber:tileNum];
+            NSString *bgImage = [NSString stringWithFormat:@"tile%d.png", tileNum - 1];
+            Tile *tempTile = [[Tile alloc] initWithFrame:CGRectMake(x, y, tileWidth, tileWidth) tileNumber:tileNum imageName:bgImage];
             [self.view addSubview: tempTile];
             [self.gameBrain addTileToGrid: tempTile];
             tileNum++;
@@ -58,7 +59,7 @@
     
     // Create empty spot ("invisible tile" treated as a tile that takes up space,
     // and can swap places with visible tiles)
-    self.invisibleTile = [[Tile alloc] initWithFrame:CGRectMake(tileWidth * 3, tileWidth * 3, tileWidth, tileWidth)  tileNumber:16];
+    self.invisibleTile = [[Tile alloc] initWithFrame:CGRectMake(tileWidth * 3, tileWidth * 3, tileWidth, tileWidth)  tileNumber:16 imageName:nil];
     self.invisibleTile.tilesArrayIndex = 15;
     self.invisibleTile.backgroundColor = [UIColor clearColor];
     [self.gameBrain addTileToGrid: self.invisibleTile];
@@ -99,9 +100,8 @@
 -(void) checkForGameWin {
     if ( ! [self.gameBrain puzzleIsSolved])
         return;
-    NSLog(@"finished!");
     if (!self.gameOverView) {
-        self.gameOverView = [[PopUpView alloc] initWithFrame:self.view.superview.frame message:@"Puzzle Solved!"];
+        self.gameOverView = [[PopUpView alloc] initWithFrame:self.view.superview.frame messageString:@"Puzzle Solved!"];
     }
     [self.view.superview addSubview:self.gameOverView];
 }
@@ -166,7 +166,7 @@
 }
 
 - (void) resetTiles {
-    NSLog(@"I can't reset tiles yet :(");
+    [self.gameBrain resetTiles];
 }
 
 - (void)didReceiveMemoryWarning {

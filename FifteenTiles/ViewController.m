@@ -38,7 +38,7 @@
     window = [[UIScreen mainScreen] applicationFrame];
     
     self.gameBrain = [GameBrain sharedInstance];
-    self.view.backgroundColor = [UIColor whiteColor];
+    self.view.backgroundColor = [UIColor blackColor];
     
     [self addTilesViewControllerToScreen];
     [self addShuffleSliderToScreen];
@@ -65,6 +65,7 @@
     self.shuffleSliderLabel = [[UILabel alloc] initWithFrame: sliderLabelFrame];
     CGPoint labelCenter = CGPointMake(window.size.width / 2, CGRectGetMaxY(self.shuffleSlider.frame) + 20);
     self.shuffleSliderLabel.center = labelCenter;
+    self.shuffleSliderLabel.textColor = [UIColor whiteColor];
     numberOfShuffleSteps = self.shuffleSlider.value * 50;
     self.shuffleSliderLabel.textAlignment = NSTextAlignmentCenter;
     self.shuffleSliderLabel.text = [NSString stringWithFormat:@"%d", numberOfShuffleSteps];
@@ -80,14 +81,18 @@
     self.shuffleButton = [[UIButton alloc] initWithFrame: buttonFrame];
     [self.shuffleButton setTitle:@"Shuffle" forState:UIControlStateNormal];
     [self.shuffleButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    self.shuffleButton.backgroundColor = [UIColor colorWithRed:0.8 green:0.1 blue:0.1 alpha:1.0];
+    self.shuffleButton.backgroundColor = [[UIColor alloc] initWithRed:1 green:1 blue:1 alpha:0.5];
     self.shuffleButton.center = CGPointMake(window.size.width / 4, window.size.height - 60);
+    self.shuffleButton.clipsToBounds = YES;
+    self.shuffleButton.layer.cornerRadius = 10;
     
     self.resetButton = [[UIButton alloc] initWithFrame: buttonFrame];
     [self.resetButton setTitle:@"Reset" forState:UIControlStateNormal];
     [self.resetButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    self.resetButton.backgroundColor = [UIColor colorWithRed:0.2 green:0.6 blue:0.2 alpha:1.0];
+    self.resetButton.backgroundColor = [UIColor colorWithRed:1 green:1 blue:1 alpha:0.5];
     self.resetButton.center = CGPointMake(window.size.width / 4 * 3, window.size.height - 60);
+    self.resetButton.clipsToBounds = YES;
+    self.resetButton.layer.cornerRadius = 10;
     
     [self.view addSubview:self.resetButton];
     [self.view addSubview:self.shuffleButton];
@@ -102,12 +107,11 @@
     [self displayBusyScreen];
 
     [self performSelector:@selector(startShuffling:) onThread:[NSThread mainThread] withObject:[NSNumber numberWithInt:numberOfShuffleSteps] waitUntilDone:YES];
-
 }
 
 -(void) displayBusyScreen {
-    if (!self.popUpView) {
-        self.popUpView = [[PopUpView alloc] initWithFrame:window message:@"Shuffling..."];
+    if (!_popUpView) {
+        _popUpView = [[PopUpView alloc] initWithFrame:window messageString:@"Shuffling..."];
     }
     [self.view addSubview:self.popUpView];
     [self.popUpView startAnimatingBusyIndicator];

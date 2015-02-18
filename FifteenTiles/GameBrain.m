@@ -68,6 +68,10 @@
     return YES;
 }
 
+- (void) resetTiles {
+    NSLog(@"Resetting tiles..");
+}
+
 // remembers the last move made to avoid backtracking during a shuffle
 - (void) makeARandomMove {
     int randomMoveNumber = arc4random_uniform(4);

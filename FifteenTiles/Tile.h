@@ -13,6 +13,6 @@
 @property(nonatomic) int number;
 @property(nonatomic) int tilesArrayIndex;
 
-- (instancetype) initWithFrame:(CGRect)frame tileNumber:(int)number;
+- (instancetype) initWithFrame:(CGRect)frame tileNumber:(int)number imageName:(NSString *)imageName;
 
 @end

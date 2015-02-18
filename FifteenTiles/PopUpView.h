@@ -12,9 +12,10 @@
 @interface PopUpView : UIView
 
 @property (nonatomic, strong) GameBrain *gameBrain;
+@property (nonatomic) NSString *messageString;
 @property (nonatomic, strong) UIActivityIndicatorView *busyIndicatorView;
 
-- (instancetype) initWithFrame:(CGRect)frame message:(NSString *)message;
+- (instancetype) initWithFrame:(CGRect)frame messageString:(NSString*)message;
 - (void) startAnimatingBusyIndicator;
 - (void) stopAnimatingBusyIndicator;
 

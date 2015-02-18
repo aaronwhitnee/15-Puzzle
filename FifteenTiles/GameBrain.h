@@ -18,6 +18,7 @@
 - (void) prepareGame;
 - (void) addTileToGrid:(Tile *)tile;
 - (BOOL) puzzleIsSolved;
+- (void) resetTiles;
 - (BOOL) moveATileLeft;
 - (BOOL) moveATileRight;
 - (BOOL) moveATileUp;
