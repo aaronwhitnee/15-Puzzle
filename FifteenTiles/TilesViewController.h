@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "GameBrain.h"
 #import "Tile.h"
+#import "PopUpView.h"
 
 @interface TilesViewController : UIViewController
 

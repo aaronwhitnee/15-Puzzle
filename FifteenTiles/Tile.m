@@ -25,7 +25,9 @@
 //    self.clipsToBounds = YES;
 //    self.layer.cornerRadius = self.frame.size.height / 10.0f;
     self.tilesArrayIndex = number - 1;
-    [self addSubview: self.numberLabel];
+    if (self.number != 16) {
+        [self addSubview: self.numberLabel];
+    }
     return self;
 }
 

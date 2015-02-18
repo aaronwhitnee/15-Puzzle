@@ -14,6 +14,7 @@
 
 @property (nonatomic, strong) GameBrain *gameBrain;
 @property (nonatomic) Tile *invisibleTile;
+@property (nonatomic) PopUpView *gameOverView;
 @property (nonatomic) UISwipeGestureRecognizer *swipeLeft;
 @property (nonatomic) UISwipeGestureRecognizer *swipeRight;
 @property (nonatomic) UISwipeGestureRecognizer *swipeUp;
@@ -49,7 +50,6 @@
     for (float y = 0; y < tileWidth * 4; y += tileWidth) {
         for (float x = 0; (x < tileWidth * 4) && (tileNum < 16); x += tileWidth) {
             Tile *tempTile = [[Tile alloc] initWithFrame:CGRectMake(x, y, tileWidth, tileWidth) tileNumber:tileNum];
-            tempTile.tilesArrayIndex = tileNum - 1;
             [self.view addSubview: tempTile];
             [self.gameBrain addTileToGrid: tempTile];
             tileNum++;
@@ -58,7 +58,7 @@
     
     // Create empty spot ("invisible tile" treated as a tile that takes up space,
     // and can swap places with visible tiles)
-    self.invisibleTile = [[Tile alloc] initWithFrame:CGRectMake(tileWidth * 3, tileWidth * 3, tileWidth, tileWidth)];
+    self.invisibleTile = [[Tile alloc] initWithFrame:CGRectMake(tileWidth * 3, tileWidth * 3, tileWidth, tileWidth)  tileNumber:16];
     self.invisibleTile.tilesArrayIndex = 15;
     self.invisibleTile.backgroundColor = [UIColor clearColor];
     [self.gameBrain addTileToGrid: self.invisibleTile];
@@ -75,21 +75,35 @@
     [UIView animateWithDuration:0.3 animations:^{
         [self.gameBrain moveATileLeft];
     }];
+    [self performSelector:@selector(checkForGameWin) withObject:nil afterDelay:0.5];
 }
 -(void) didSwipeRight: (UISwipeGestureRecognizer *) swipeObject {
     [UIView animateWithDuration:0.3 animations:^{
         [self.gameBrain moveATileRight];
     }];
+    [self performSelector:@selector(checkForGameWin) withObject:nil afterDelay:0.5];
 }
 -(void) didSwipeUp: (UISwipeGestureRecognizer *) swipeObject {
     [UIView animateWithDuration:0.3 animations:^{
         [self.gameBrain moveATileUp];
     }];
+    [self performSelector:@selector(checkForGameWin) withObject:nil afterDelay:0.5];
 }
 -(void) didSwipeDown: (UISwipeGestureRecognizer *) swipeObject {
     [UIView animateWithDuration:0.3 animations:^{
         [self.gameBrain moveATileDown];
     }];
+    [self performSelector:@selector(checkForGameWin) withObject:nil afterDelay:0.5];
+}
+
+-(void) checkForGameWin {
+    if ( ! [self.gameBrain puzzleIsSolved])
+        return;
+    NSLog(@"finished!");
+    if (!self.gameOverView) {
+        self.gameOverView = [[PopUpView alloc] initWithFrame:self.view.superview.frame message:@"Puzzle Solved!"];
+    }
+    [self.view.superview addSubview:self.gameOverView];
 }
 
 -(UISwipeGestureRecognizer *) swipeLeft {

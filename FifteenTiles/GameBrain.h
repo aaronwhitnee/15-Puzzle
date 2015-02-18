@@ -17,6 +17,7 @@
 + (GameBrain *) sharedInstance;
 - (void) prepareGame;
 - (void) addTileToGrid:(Tile *)tile;
+- (BOOL) puzzleIsSolved;
 - (BOOL) moveATileLeft;
 - (BOOL) moveATileRight;
 - (BOOL) moveATileUp;

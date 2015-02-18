@@ -14,23 +14,27 @@
 
 @property(nonatomic) UILabel *messageLabel;
 @property(nonatomic) NSString *messageString;
+@property(nonatomic) UIButton *continueButton;
 
 @end
 
 @implementation PopUpView
 
-- (instancetype) initWithFrame:(CGRect)screen message:(NSString *)message {
+- (instancetype) initWithFrame:(CGRect)frame message:(NSString *)message {
     if ([self init] == nil) {
         return nil;
     }
     
-    mainFrame = screen;
+    mainFrame = frame;
     self.frame = mainFrame;
+    
+    [self.continueButton addTarget:self action:@selector(didTapContinueButton:) forControlEvents:UIControlEventTouchUpInside];
     
     self.messageLabel = [[UILabel alloc] init];
     self.messageLabel.text = message;
     self.messageLabel.adjustsFontSizeToFitWidth = YES;
     self.messageLabel.textAlignment = NSTextAlignmentCenter;
+    self.messageLabel.font = [UIFont systemFontOfSize: self.frame.size.width / 2];
     self.messageLabel.backgroundColor = [UIColor clearColor];
     
     switch (self.gameBrain.gameState) {
@@ -54,12 +58,30 @@
     return _gameBrain;
 }
 
+- (UIButton *) continueButton {
+    if (!_continueButton) {
+        _continueButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, mainFrame.size.width / 4, mainFrame.size.width * 0.1)];
+        [_continueButton setTitle:@"OK" forState:UIControlStateNormal];
+        _continueButton.backgroundColor = [[UIColor alloc] initWithRed:0.7 green:0.3 blue:0.3 alpha:1.0];
+        _continueButton.titleLabel.adjustsFontSizeToFitWidth = YES;
+    }
+    return _continueButton;
+}
+
+- (void) didTapContinueButton:(UIButton *) sender {
+    [self removeFromSuperview];
+}
+
 - (void) createGameOverScreen {
     self.backgroundColor = [[UIColor alloc] initWithRed:0.2 green:0.2 blue:0.2 alpha:0.7];
     
-    self.messageLabel.frame = CGRectMake(0, 0, mainFrame.size.width * 0.8, mainFrame.size.width * 0.1);
-    self.messageLabel.center = CGPointMake(mainFrame.size.width / 2, mainFrame.size.height * 0.4);
+    self.messageLabel.frame = CGRectMake(0, 0, mainFrame.size.width * 0.9, mainFrame.size.width * 0.4);
+    self.messageLabel.center = CGPointMake(mainFrame.size.width / 2, mainFrame.size.height * 0.35);
     self.messageLabel.textColor = [UIColor whiteColor];
+    
+    [self.continueButton setCenter:CGPointMake(mainFrame.size.width / 2, CGRectGetMaxY(self.messageLabel.frame) + 30)];
+    
+    [self addSubview:self.continueButton];
     [self addSubview:self.messageLabel];
 }
 

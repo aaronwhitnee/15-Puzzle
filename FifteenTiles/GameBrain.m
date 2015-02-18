@@ -55,6 +55,19 @@
     [self.gameTilesArray addObject:tile];
 }
 
+- (BOOL) puzzleIsSolved {
+    if (self.gameState == busy) {
+        return NO;
+    }
+    for (int i = 0; i < [self.gameTilesArray count]; i++) {
+        if (i + 1 != [self.gameTilesArray[i] number]) {
+            return NO;
+        }
+    }
+    self.gameState = gameOver;
+    return YES;
+}
+
 // remembers the last move made to avoid backtracking during a shuffle
 - (void) makeARandomMove {
     int randomMoveNumber = arc4random_uniform(4);
