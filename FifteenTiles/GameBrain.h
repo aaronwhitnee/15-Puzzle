@@ -11,14 +11,18 @@
 
 @interface GameBrain : NSObject
 
-@property(atomic) enum state {gameOver = 0, playing, busy};
-@property(atomic) enum state gameState;
+enum direction {left, right, up, down};
+
+@property(nonatomic) NSMutableArray *gameTilesArray;
+@property(nonatomic) NSMutableArray *movesHistory;
+@property(nonatomic) enum state {gameOver = 0, playing, busy};
+@property(nonatomic) enum state gameState;
 
 + (GameBrain *) sharedInstance;
 - (void) prepareGame;
 - (void) addTileToGrid:(Tile *)tile;
 - (BOOL) puzzleIsSolved;
-- (void) resetTiles;
+- (void) clearMovesHistory;
 - (BOOL) moveATileLeft;
 - (BOOL) moveATileRight;
 - (BOOL) moveATileUp;

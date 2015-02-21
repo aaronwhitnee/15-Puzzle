@@ -24,7 +24,7 @@
     self.clipsToBounds = YES;
     self.layer.cornerRadius = self.frame.size.height / 10.0f;
     self.layer.borderWidth = 2.0;
-    self.layer.borderColor = [UIColor blackColor].CGColor;
+    self.layer.borderColor = [UIColor colorWithRed:0/255.0 green:61/255.0 blue:115/255.0 alpha:1.0].CGColor;
     self.tilesArrayIndex = number - 1;
     
     [self setBackgroundImage:[UIImage imageNamed:imageName] forState:UIControlStateNormal];

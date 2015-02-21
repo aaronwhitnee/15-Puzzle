@@ -10,13 +10,12 @@
 
 @interface GameBrain ()
 
-@property(atomic) NSMutableArray *gameTilesArray;
-@property(atomic) int lastMoveMade;
-@property(atomic) Tile *invisibleTile;
-@property(atomic, strong) Tile *canMoveLeft;
-@property(atomic, strong) Tile *canMoveRight;
-@property(atomic, strong) Tile *canMoveUp;
-@property(atomic, strong) Tile *canMoveDown;
+@property(nonatomic) int lastMoveMade;
+@property(nonatomic) Tile *invisibleTile;
+@property(nonatomic, strong) Tile *canMoveLeft;
+@property(nonatomic, strong) Tile *canMoveRight;
+@property(nonatomic, strong) Tile *canMoveUp;
+@property(nonatomic, strong) Tile *canMoveDown;
 
 - (void) moveInvisibleTile;
 
@@ -40,6 +39,7 @@
 }
 
 - (void) prepareGame {
+    self.movesHistory = [[NSMutableArray alloc] init];
     self.gameState = playing;
     self.canMoveLeft = nil;
     self.canMoveRight = self.gameTilesArray[14];
@@ -68,37 +68,45 @@
     return YES;
 }
 
-- (void) resetTiles {
-    NSLog(@"Resetting tiles..");
+- (NSMutableArray *) movesHistory {
+    if (!_movesHistory) {
+        _movesHistory = [[NSMutableArray alloc] init];
+    }
+    return _movesHistory;
 }
+
+- (void) clearMovesHistory {
+    self.movesHistory = nil;
+}
+
 
 // remembers the last move made to avoid backtracking during a shuffle
 - (void) makeARandomMove {
     int randomMoveNumber = arc4random_uniform(4);
     printf("attempting to move (%i)\n", randomMoveNumber);
     switch (randomMoveNumber) {
-        case 0:
-            if(self.canMoveLeft && self.lastMoveMade != 1) {
+        case left:
+            if(self.canMoveLeft && self.lastMoveMade != right) {
                 [self moveATileLeft];
-                self.lastMoveMade = 0;
+                self.lastMoveMade = left;
                 break;
             }
-        case 1:
-            if(self.canMoveRight && self.lastMoveMade != 0) {
+        case right:
+            if(self.canMoveRight && self.lastMoveMade != left) {
                 [self moveATileRight];
-                self.lastMoveMade = 1;
+                self.lastMoveMade = right;
                 break;
             }
-        case 2:
-            if(self.canMoveUp && self.lastMoveMade != 3) {
+        case up:
+            if(self.canMoveUp && self.lastMoveMade != down) {
                 [self moveATileUp];
-                self.lastMoveMade = 2;
+                self.lastMoveMade = up;
                 break;
             }
-        case 3:
-            if(self.canMoveDown && self.lastMoveMade != 2) {
+        case down:
+            if(self.canMoveDown && self.lastMoveMade != up) {
                 [self moveATileDown];
-                self.lastMoveMade = 3;
+                self.lastMoveMade = down;
                 break;
             }
         default:
@@ -143,8 +151,10 @@
         int tempIndex = self.canMoveLeft.tilesArrayIndex;
         self.canMoveLeft.tilesArrayIndex = self.invisibleTile.tilesArrayIndex;
         self.invisibleTile.tilesArrayIndex = tempIndex;
-        
+                
         [self moveInvisibleTile];
+        [self.movesHistory addObject:@0];
+
         return YES;
     }
     return NO;
@@ -165,6 +175,8 @@
         self.invisibleTile.tilesArrayIndex = tempIndex;
         
         [self moveInvisibleTile];
+        [self.movesHistory addObject:@1];
+
         return YES;
     }
     return NO;
@@ -185,6 +197,8 @@
         self.invisibleTile.tilesArrayIndex = tempIndex;
         
         [self moveInvisibleTile];
+        [self.movesHistory addObject:@2];
+
         return YES;
     }
     return NO;
@@ -205,6 +219,8 @@
         self.invisibleTile.tilesArrayIndex = tempIndex;
         
         [self moveInvisibleTile];
+        [self.movesHistory addObject:@3];
+
         return YES;
     }
     return NO;

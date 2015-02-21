@@ -42,7 +42,8 @@
     
     self.gameBrain = [GameBrain sharedInstance];
     
-    self.view.backgroundColor = [UIColor blackColor];
+    self.view.backgroundColor = [UIColor colorWithRed:0/255.0 green:61/255.0 blue:115/255.0 alpha:1.0];
+    self.view.layer.borderColor = [UIColor colorWithRed:0/255.0 green:61/255.0 blue:115/255.0 alpha:1.0].CGColor;
     
     // Create Tile UIButtons
     int tileNum = 1;
@@ -141,21 +142,6 @@
         self.gameBrain.gameState = playing;
         return;
     }
-    NSLog(@"Shuffle tiles %d times.", numberOfSteps);
-//    int successfulMoves = 0;
-//    float timeDelayInterval = 0;
-//    
-//    while (successfulMoves < numberOfSteps) {
-//        [UIView animateWithDuration:0.15
-//                              delay:timeDelayInterval
-//                            options:UIViewAnimationOptionCurveEaseInOut
-//                         animations:^{
-//                             [self.gameBrain makeARandomMove];
-//                         }
-//                         completion:nil];
-//        successfulMoves++;
-//        timeDelayInterval += 0.15;
-//    }
     [UIView animateWithDuration:0.15
                      animations:^{
                          [self.gameBrain makeARandomMove];
@@ -166,7 +152,36 @@
 }
 
 - (void) resetTiles {
-    [self.gameBrain resetTiles];
+    for (int i = [self.gameBrain.movesHistory count] - 1; i >= 0; i--) {
+        int move = [[self.gameBrain.movesHistory objectAtIndex:i] intValue];
+        switch (move) {
+            case left: {
+                [UIView animateWithDuration:0.3 animations:^{
+                    [self.gameBrain moveATileRight];
+                }];
+            }
+                break;
+            case right: {
+                [UIView animateWithDuration:0.3 animations:^{
+                    [self.gameBrain moveATileLeft];
+                }];
+            }
+                break;
+            case up: {
+                [UIView animateWithDuration:0.3 animations:^{
+                    [self.gameBrain moveATileDown];
+                }];
+            }
+                break;
+            case down: {
+                [UIView animateWithDuration:0.3 animations:^{
+                    [self.gameBrain moveATileUp];
+                }];
+            }
+                break;
+        }
+    }
+    [self.gameBrain clearMovesHistory];
 }
 
 - (void)didReceiveMemoryWarning {

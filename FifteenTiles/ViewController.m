@@ -38,7 +38,7 @@
     window = [[UIScreen mainScreen] applicationFrame];
     
     self.gameBrain = [GameBrain sharedInstance];
-    self.view.backgroundColor = [UIColor blackColor];
+    self.view.backgroundColor = [UIColor colorWithRed:220/255.0 green:220/255.0 blue:220/255.0 alpha:1.0];
     
     [self addTilesViewControllerToScreen];
     [self addShuffleSliderToScreen];
@@ -65,7 +65,7 @@
     self.shuffleSliderLabel = [[UILabel alloc] initWithFrame: sliderLabelFrame];
     CGPoint labelCenter = CGPointMake(window.size.width / 2, CGRectGetMaxY(self.shuffleSlider.frame) + 20);
     self.shuffleSliderLabel.center = labelCenter;
-    self.shuffleSliderLabel.textColor = [UIColor whiteColor];
+    self.shuffleSliderLabel.textColor = [UIColor blackColor];
     numberOfShuffleSteps = self.shuffleSlider.value * 50;
     self.shuffleSliderLabel.textAlignment = NSTextAlignmentCenter;
     self.shuffleSliderLabel.text = [NSString stringWithFormat:@"%d", numberOfShuffleSteps];
@@ -81,7 +81,7 @@
     self.shuffleButton = [[UIButton alloc] initWithFrame: buttonFrame];
     [self.shuffleButton setTitle:@"Shuffle" forState:UIControlStateNormal];
     [self.shuffleButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    self.shuffleButton.backgroundColor = [[UIColor alloc] initWithRed:1 green:1 blue:1 alpha:0.5];
+    self.shuffleButton.backgroundColor = [UIColor colorWithRed:0/255.0 green:61/255.0 blue:115/255.0 alpha:0.5];
     self.shuffleButton.center = CGPointMake(window.size.width / 4, window.size.height - 60);
     self.shuffleButton.clipsToBounds = YES;
     self.shuffleButton.layer.cornerRadius = 10;
@@ -89,7 +89,7 @@
     self.resetButton = [[UIButton alloc] initWithFrame: buttonFrame];
     [self.resetButton setTitle:@"Reset" forState:UIControlStateNormal];
     [self.resetButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    self.resetButton.backgroundColor = [UIColor colorWithRed:1 green:1 blue:1 alpha:0.5];
+    self.resetButton.backgroundColor = [UIColor colorWithRed:0/255.0 green:61/255.0 blue:115/255.0 alpha:0.5];
     self.resetButton.center = CGPointMake(window.size.width / 4 * 3, window.size.height - 60);
     self.resetButton.clipsToBounds = YES;
     self.resetButton.layer.cornerRadius = 10;
@@ -123,12 +123,18 @@
 }
 
 -(void) startShuffling:(NSNumber *)shuffleCount {
+    self.gameBrain.gameState = busy;
     [self.tilesViewController shuffleTiles: [shuffleCount intValue]];
     self.gameBrain.gameState = playing;
 }
 
 -(void) resetButtonPressed:(UIButton *)sender {
+    self.gameBrain.gameState = busy;
+    if ([self.gameBrain puzzleIsSolved]) {
+        return;
+    }
     [self.tilesViewController resetTiles];
+    self.gameBrain.gameState = playing;
 }
 
 -(void) sliderValueChanged:(UISlider *)sender {
@@ -136,7 +142,7 @@
     self.shuffleSliderLabel.text = [NSString stringWithFormat:@"%d", numberOfShuffleSteps];
 }
 
-- (void)didReceiveMemoryWarning {
+- (void) didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
